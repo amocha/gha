@@ -1,0 +1,9 @@
+steps:
+  - task: DownloadSecureFile@1
+    name: certpem
+    inputs:
+      secureFile: "${{ parameters.envtype }}.pem"
+  - task: DownloadSecureFile@1
+    name: certpfx
+    inputs:
+      secureFile: "${{ parameters.envtype }}.pfx"

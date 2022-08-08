@@ -1,0 +1,45 @@
+stages:
+  - stage: Run_SSO_Onboarding
+    jobs:
+      - job: SSO_Onboard
+        displayName: SSO_Onboard
+        condition: eq('${{ parameters.runDeploy }}', true)
+        steps:
+          - task: KubectlInstaller@0
+            inputs:
+              kubectlVersion: "latest"
+          - script: |
+              echo $(kubeformns)
+              echo "##vso[task.setvariable variable=wkldns]$(kubeformns)"
+          - task: a8515ec8-7254-4ffd-912c-86772e2b5962@3
+            inputs:
+              rootDirectory: "templates"
+              targetFiles: "create_namespace.yml"
+              encoding: "auto"
+              writeBOM: true
+              actionOnMissing: "warn"
+              keepToken: false
+              tokenPrefix: "#{"
+              tokenSuffix: "}#"
+              useLegacyPattern: false
+              enableTelemetry: true
+
+          - task: Kubernetes@1
+            inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceEndpoint: "workload-npd"
+              command: "apply"
+              useConfigurationFile: true
+              configuration: "templates/create_namespace.yml"
+            displayName: Setup namespace for Ingress on NPD Workload cluster
+            condition: or(and(eq('${{ parameters.runDeploy }}', true), eq( '${{ parameters.envtype }}' , 'npd')), and(eq('${{ parameters.runDeploy }}', true), eq( '${{ parameters.envtype }}' , 'sbx')))
+
+          - task: Kubernetes@1
+            inputs:
+              connectionType: "Kubernetes Service Connection"
+              kubernetesServiceEndpoint: "workload-prd"
+              command: "apply"
+              useConfigurationFile: true
+              configuration: "templates/create_namespace.yml"
+            displayName: Setup namespace for Ingress on PRD Workload cluster
+            condition: and(eq('${{ parameters.runDeploy }}', true), eq('${{ parameters.envtype }}', 'prd'))

@@ -1,0 +1,24 @@
+- repo: git://github.com/antonbabenko/pre-commit-terraform
+  rev: v1.15.0
+  hooks:
+          #    - id: terraform_docs
+    - id: terraform_fmt
+
+- repo: git://github.com/pre-commit/pre-commit-hooks
+  rev: v2.2.3
+  hooks:
+    - id: check-added-large-files
+    - id: check-merge-conflict
+    - id: detect-private-key
+    - id: end-of-file-fixer
+    - id: forbid-new-submodules
+    - id: trailing-whitespace
+    - id: check-yaml
+    - id: check-json
+- repo: https://github.com/gruntwork-io/pre-commit
+  rev: v0.1.5
+  hooks:
+          #    - id: tflint
+    - id: shellcheck
+    - id: gofmt
+    - id: golint

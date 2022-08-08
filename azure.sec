@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  client_certificate_path: "#{ kubeformns }#.pfx"
+  client_id: #{ appClientId }#
+  subscription_id: #{ appSubscriptionId }#
+  tenant_id: #{ TENANT-ID }#
+kind: Secret
+metadata:
+  name: azure
+type: Opaque
