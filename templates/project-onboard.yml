@@ -91,7 +91,6 @@ stages:
                              -var region=${{ parameters.region }} \
                              -var placement=${{ parameters.placement }} \
                              -var npdsub=$(MNPD-SUB-ID) \
-                             -var sbxsub=$(MSBX-SUB-ID) \
                              -var prdsub=$(MPRD-SUB-ID) \
                              -var-file /tmp/tfvars \
                              -var-file /tmp/accesspol \
@@ -134,19 +133,6 @@ stages:
               kubectl label namespace $(kubeformns) remotebackend=azure --overwrite=true --dry-run=client -o yaml| kubectl apply -f -
               kubectl create secret -n $(kubeformns) generic f4dptoken --from-literal=f4dptoken=$tkn --dry-run=client -o yaml | kubectl apply -f -
               kubectl create secret generic -n $(kubeformns) azure --from-literal=client_certificate_path="/etc/certs/$(kubeformns).pfx" --from-literal=client_id=$(appClientId) --from-literal=subscription_id=$(appSubscriptionId) --from-literal=tenant_id=$(TENANT-ID) --dry-run=client -o yaml | kubectl apply -f -
-              if [ $(environshort) = "PRD" ];
-              then
-              kubectl create secret generic -n $(kubeformns) azure-platform --from-literal=client_certificate_path="/etc/platcerts/platsb.pfx" --from-literal=client_id=$(platClientIdPrd) --from-literal=subscription_id=$(platSubscriptionIdPrd) --from-literal=tenant_id=$(TENANT-ID) --dry-run=client -o yaml | kubectl apply -f -
-              elif [ $(environshort) = "DEV" ];
-              then
-              kubectl create secret generic -n $(kubeformns) azure-platform --from-literal=client_certificate_path="/etc/platcerts/platsb.pfx" --from-literal=client_id=$(platClientIdDev) --from-literal=subscription_id=$(platSubscriptionIdDev) --from-literal=tenant_id=$(TENANT-ID) --dry-run=client -o yaml | kubectl apply -f -
-              elif [ $(environshort) = "QAT" ];
-              then
-              kubectl create secret generic -n $(kubeformns) azure-platform --from-literal=client_certificate_path="/etc/platcerts/platsb.pfx" --from-literal=client_id=$(platClientIdQat) --from-literal=subscription_id=$(platSubscriptionIdQat) --from-literal=tenant_id=$(TENANT-ID) --dry-run=client -o yaml | kubectl apply -f -
-              elif [ $(environshort) = "SBX" ];
-              then
-              kubectl create secret generic -n $(kubeformns) azure-platform --from-literal=client_certificate_path="/etc/platcerts/platsb.pfx" --from-literal=client_id=$(platClientIdSbx) --from-literal=subscription_id=$(platSubscriptionIdSbx) --from-literal=tenant_id=$(TENANT-ID) --dry-run=client -o yaml | kubectl apply -f -
-              fi
               b64clicrt=$(cat /tmp/appcert.pfx|base64 -w0)
               patch="{\"data\":{\"$(kubeformns).pfx\":\"$b64clicrt\"}}"
               kubectl patch secret spncertssecret -n kubeform -p $patch
@@ -168,11 +154,6 @@ stages:
                   tkn: $(TKN)
           - ${{ if eq(parameters.envtype, 'prd') }}:
               - template: updatekeys_prd.yml
-                parameters:
-                  keyname: $(kubeformns)
-                  tkn: $(TKN)
-          - ${{ if eq(parameters.envtype, 'sbx') }}:
-              - template: updatekeys_sbx.yml
                 parameters:
                   keyname: $(kubeformns)
                   tkn: $(TKN)

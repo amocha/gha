@@ -81,23 +81,12 @@ The onboarding pipeline has some moving parts which it relies on
   |kpAppResId | The resource id of the kapply fn for PRD|
   |kpExpandResId | The resource id of the kexpand fn for PRD|
   |kpReadResId | The resource id of the kread fn for PRD|
-  |MSBX-CLI-ID | The client id used for SBX|
-  |MSBX-KV | the keyvault storing the certificates and client id of application as well as some common entries for SBX|
-  |MSBX-SUB-ID | The subscription ID of SBX|
   |MNPD-CLI-ID | The client id used for npd|
   |MNPD-KV | the keyvault storing the certificates and client id of application as well as some common entries for NPD|
   |MNPD-SUB-ID | The subscription ID of MGMT NPD|
   |MPRD-CLI-ID | The client id used for PRD|
   |MPRD-KV | the keyvault storing the certificates and client id of application as well as some common entries for PRD|
   |MPRD-SUB-ID | The subscription ID of MGMT PRD|
-  |platClientIdDev | dev platform client id for platform service bus|
-  |platClientIdPrd | prd platform client id for platform service bus|
-  |platClientIdQat | qat platform client id for platform service bus|
-  |platClientIdSbx | sbx platform client id for platform service bus|
-  |platSubscriptionIdDev | dev platform sub for platform service bus|
-  |platSubscriptionIdPrd | prd platform sub for platform service bus|
-  |platSubscriptionIdQat | qat platform sub for platform service bus|
-  |platSubscriptionIdSbx | sbx platform sub for platform service bus|
   |TENANT-ID | Tenant ID|
 
 - Presence of secrets and certificates in respective Sandbox, Management Non prod and Management prod keyvault. These secrets are

@@ -32,7 +32,7 @@ stages:
               useConfigurationFile: true
               configuration: "templates/create_namespace.yml"
             displayName: Setup namespace for Ingress on NPD Workload cluster
-            condition: or(and(eq('${{ parameters.runDeploy }}', true), eq( '${{ parameters.envtype }}' , 'npd')), and(eq('${{ parameters.runDeploy }}', true), eq( '${{ parameters.envtype }}' , 'sbx')))
+            condition: and(eq('${{ parameters.runDeploy }}', true), eq('${{ parameters.envtype }}', 'npd'))
 
           - task: Kubernetes@1
             inputs:

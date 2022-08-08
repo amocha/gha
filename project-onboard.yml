@@ -73,7 +73,6 @@ parameters:
     values:
       - "npd"
       - "prd"
-      - "sbx"
 
 variables:
   - group: onboard
@@ -88,15 +87,6 @@ variables:
           instance: ${{ parameters.instance }}
   - ${{ if eq(parameters.envtype, 'prd') }}:
       - template: templates/var_prd.yml
-        parameters:
-          workStream: ${{ parameters.workStream }}
-          projectShortCode: ${{ parameters.projectShortCode }}
-          environ: ${{ parameters.environ }}
-          appSubscriptionId: ${{ parameters.appSubscriptionId }}
-          placement: ${{ parameters.placement }}
-          instance: ${{ parameters.instance }}
-  - ${{ if eq(parameters.envtype, 'sbx') }}:
-      - template: templates/var_sbx.yml
         parameters:
           workStream: ${{ parameters.workStream }}
           projectShortCode: ${{ parameters.projectShortCode }}

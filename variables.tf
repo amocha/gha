@@ -55,11 +55,6 @@ variable "npdsub" {
   type = string
 }
 
-variable "sbxsub" {
-  type = string
-}
-
-
 variable "prdsub" {
   type = string
 }
