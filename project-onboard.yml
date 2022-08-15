@@ -36,14 +36,6 @@ parameters:
   - name: environ
     displayName: Environment for the particular application. For e.g dev, prd etc.
     type: string
-  - name: releaseVersion
-    displayName: Enter the releaseVersion of the project
-    default: "100"
-    type: string
-  - name: instance
-    displayName: Provide the instance for the workStream
-    default: "001"
-    type: string
   - name: appsptype
     displayName: App service Plan required? if Required please specify the type else leave the default value of none.
     type: string
@@ -84,7 +76,7 @@ variables:
           environ: ${{ parameters.environ }}
           appSubscriptionId: ${{ parameters.appSubscriptionId }}
           placement: ${{ parameters.placement }}
-          instance: ${{ parameters.instance }}
+          instance: 001
   - ${{ if eq(parameters.envtype, 'prd') }}:
       - template: templates/var_prd.yml
         parameters:
@@ -93,7 +85,7 @@ variables:
           environ: ${{ parameters.environ }}
           appSubscriptionId: ${{ parameters.appSubscriptionId }}
           placement: ${{ parameters.placement }}
-          instance: ${{ parameters.instance }}
+          instance: 001
 
 stages:
   - template: templates/project-onboard.yml
@@ -102,8 +94,8 @@ stages:
       projectShortCode: ${{ parameters.projectShortCode }}
       environ: ${{ parameters.environ }}
       placement: ${{ parameters.placement }}
-      instance: ${{ parameters.instance }}
-      releaseVersion: ${{ parameters.releaseVersion }}
+      instance: 001
+      releaseVersion: 100
       appSubscriptionId: ${{ parameters.appSubscriptionId }}
       runDeploy: ${{ parameters.runDeploy }}
       tfvar: ${{ parameters.tfvar }}
