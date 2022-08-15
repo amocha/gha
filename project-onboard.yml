@@ -1,9 +1,8 @@
-name: AppOnboard
 trigger: none
 pr: none
 
 pool:
-  vmImage: "ubuntu-18.04"
+  vmImage: "ubuntu-20.04"
 
 parameters:
   - name: runDeploy
@@ -67,25 +66,28 @@ parameters:
       - "prd"
 
 variables:
-  - group: onboard
+  - group: dep-onboard
+  - template: templates/var.yml
+    parameters:
+      workStream: ${{ parameters.workStream }}
+      projectShortCode: ${{ parameters.projectShortCode }}
+      environ: ${{ parameters.environ }}
+      placement: ${{ parameters.placement }}
+      instance: 001
   - ${{ if eq(parameters.envtype, 'npd') }}:
-      - template: templates/var_npd.yml
-        parameters:
-          workStream: ${{ parameters.workStream }}
-          projectShortCode: ${{ parameters.projectShortCode }}
-          environ: ${{ parameters.environ }}
-          appSubscriptionId: ${{ parameters.appSubscriptionId }}
-          placement: ${{ parameters.placement }}
-          instance: 001
+    - name: isProd
+      value: false
+    - name: kubeconfigControl
+      value: $(kubeconfigCcNpd)
+    - name: kubeconfigWorkload
+      value: $(kubeconfigWkNpd)
   - ${{ if eq(parameters.envtype, 'prd') }}:
-      - template: templates/var_prd.yml
-        parameters:
-          workStream: ${{ parameters.workStream }}
-          projectShortCode: ${{ parameters.projectShortCode }}
-          environ: ${{ parameters.environ }}
-          appSubscriptionId: ${{ parameters.appSubscriptionId }}
-          placement: ${{ parameters.placement }}
-          instance: 001
+    - name: isProd
+      value: true
+    - name: kubeconfigControl
+      value: $(kubeconfigCcPrd)
+    - name: kubeconfigWorkload
+      value: $(kubeconfigWkPrd)
 
 stages:
   - template: templates/project-onboard.yml
@@ -102,13 +104,10 @@ stages:
       vnet_prim: ${{ parameters.vnet_prim }}
       vnet_sec: ${{ parameters.vnet_sec }}
       region: ${{ parameters.region }}
-      envtype: ${{ parameters.envtype }}
       appsptype: ${{ parameters.appsptype }}
-  - template: templates/project-sso-onboard.yml
+  - template: templates/sso-onboard.yml
     parameters:
-      workStream: ${{ parameters.workStream }}
-      projectShortCode: ${{ parameters.projectShortCode }}
-      environ: ${{ parameters.environ }}
       runDeploy: ${{ parameters.runDeploy }}
-      placement: ${{ parameters.placement }}
-      envtype: ${{ parameters.envtype }}
+      kubeformNs: $(kubeformns)
+      kubeconfigBastion: $(kubeconfigBastion)
+      kubeconfigWorkload: $(kubeconfigWorkload)

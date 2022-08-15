@@ -50,15 +50,6 @@ variable "appClientId" {
   description = "Provide the client ID"
 }
 
-
-variable "npdsub" {
-  type = string
-}
-
-variable "prdsub" {
-  type = string
-}
-
 ## Resource Group
 
 
@@ -93,7 +84,7 @@ variable "access_pol" {
   }))
 }
 
-variable "isprod" {
+variable "isProd" {
   type        = bool
   default     = false
   description = "Is this a prod subscription?"
@@ -144,4 +135,9 @@ variable "ipAddr" {
 variable "appsptype" {
   type        = string
   description = "type of appsp"
+}
+
+variable "token" {
+  type        = string
+  description = "The token of function app"
 }
