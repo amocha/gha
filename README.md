@@ -72,32 +72,29 @@ This is the AAD Object ID attribute for the User, Group or SPN. The object ID ca
 
 The onboarding pipeline has some moving parts which it relies on
 
-- Variable group `onboard` in ADO. These are: <br>
+- Variable group `dep-onboard` in ADO. These are: <br>
   | Parameter | Description |
   | --------- | ----------- |
   |knAppResId | The resource id of the kapply fn for NPD |
   |knExpandResId | The resource id of the kexpand fn for NPD|
-  |knReadResId | The resource id of the kread fn for NPD|
   |kpAppResId | The resource id of the kapply fn for PRD|
   |kpExpandResId | The resource id of the kexpand fn for PRD|
-  |kpReadResId | The resource id of the kread fn for PRD|
-  |MNPD-CLI-ID | The client id used for npd|
-  |MNPD-KV | the keyvault storing the certificates and client id of application as well as some common entries for NPD|
-  |MNPD-SUB-ID | The subscription ID of MGMT NPD|
-  |MPRD-CLI-ID | The client id used for PRD|
-  |MPRD-KV | the keyvault storing the certificates and client id of application as well as some common entries for PRD|
-  |MPRD-SUB-ID | The subscription ID of MGMT PRD|
-  |TENANT-ID | Tenant ID|
+  |azureServiceConnection | The azure service connection to be used for onboarding pipeline|
+  |platformKeyVault | The key vault name that stores the certificates and client id of application as well as some common entries|
+  |platformSpnPfx | The name of SPN PFX certificate, which is an ADO secure file|
+  |kubeconfigBastion | The name of Kubeconfig file of bastion cluster, the file is an ADO secure file|
+  |kubeconfigCcNpd | The name of Kubeconfig file of NPD control cluster, the file is an ADO secure file |
+  |kubeconfigCcPrd | The name of Kubeconfig file of PRD control cluster, the file is an ADO secure file |
+  |kubeconfigWkNpd | The name of Kubeconfig file of NPD workload cluster, the file is an ADO secure file |
+  |kubeconfigWkPrd | The name of Kubeconfig file of PRD workload cluster, the file is an ADO secure file |
 
 - Presence of secrets and certificates in respective Sandbox, Management Non prod and Management prod keyvault. These secrets are
 
-  - onboardconfig - kubernetes config to create namespace
   - def-access-pol - this is for default access policy that needs to be applied to the keyvault. This is required because of Azure Policy adding some additional object ids to the keyvault
-
   - ClientId of the subscription related SPN. The format is `<subscriptionstring until the sequence>-Contributor-secret` e.g. AZ-AS-SPN-EX-N-SEQ00005-Contributor-secret
   - ClientCertificate for the subscription related SPN. The format is `<subscriptionstring until the sequence>-Contributor-cert`AZ-AS-SPN-EX-N-SEQ00005-Contributor-cert
 
-    The onboarding expects that the ClientId and the ClientCertificate to be available and loaded into the respective MGMT or SBX keyvault for the use during the pipeline.
+    The onboarding expects that the ClientId and the ClientCertificate to be available and loaded into the respective MGMT keyvault for the use during the pipeline.
 
 - During the run the `tfvar` needs to be constructed in order to provide the AAD group created for the application team to be added to the Keyvault access policy.
 
