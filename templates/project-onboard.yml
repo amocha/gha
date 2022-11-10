@@ -168,14 +168,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: inlineScript
               inlineScript: |
-                kAppResId=$(knAppResId)
-                kExpandResId=$(knExpandResId)
-                if [ $(isProd) == "true" ]; then
-                  kAppResId=$(kpAppResId)
-                  kExpandResId=$(kpExpandResId)
-                fi
-
                 payload="{\"properties\":{\"name\":\"$(kubeformns)\",\"value\":\"$(TKN)\"}}"
-                az rest --method put  --uri "${kAppResId}/functions/kapply/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
-                az rest --method put  --uri "${kAppResId}/functions/kread/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
-                az rest --method put  --uri "${kExpandResId}/functions/expand/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
+                az rest --method put --uri "$(kAppResId)/functions/kapply/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
+                az rest --method put --uri "$(kAppResId)/functions/kread/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
+                az rest --method put --uri "$(kExpandResId)/functions/expand/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
