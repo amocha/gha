@@ -153,7 +153,7 @@ stages:
                 kubectl create namespace $(kubeformns) --dry-run=client -o yaml | kubectl apply -f -
                 kubectl label namespace $(kubeformns) remotebackend=azure --overwrite=true --dry-run=client -o yaml| kubectl apply -f -
                 kubectl create secret -n $(kubeformns) generic f4dptoken --from-literal=f4dptoken=$(TKN) --dry-run=client -o yaml | kubectl apply -f -
-                kubectl create secret generic -n $(kubeformns) azure --from-literal=client_certificate_path="/etc/certs/$(kubeformns).pfx" --from-literal=client_id=$(appClientId) --from-literal=subscription_id=${{ parameters.appSubscriptionId }} --from-literal=tenant_id=$tenantId --dry-run=client -o yaml | kubectl apply -f -
+                kubectl create secret generic -n $(kubeformns) azure --from-literal=client_certificate_path="/etc/certs/$(kubeformns).pfx" --from-literal=client_id=$(appClientId) --from-literal=version="=2.71.0" --from-literal=subscription_id=${{ parameters.appSubscriptionId }} --from-literal=tenant_id=$tenantId --dry-run=client -o yaml | kubectl apply -f -
                 b64clicrt=$(cat /tmp/appcert.pfx|base64 -w0)
                 patch="{\"data\":{\"$(kubeformns).pfx\":\"$b64clicrt\"}}"
                 kubectl patch secret spncertssecret -n kubeform -p $patch
