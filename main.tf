@@ -1,6 +1,6 @@
 ## Tagging
 module "tag" {
-  source         = "git::ssh://sede-ds-adp@ssh.dev.azure.com/v3/sede-ds-adp/Platform%20-%20General/sedp-tf-az-tagging?ref=v0.3.2"
+  source         = "git::ssh://sede-ds-adp@ssh.dev.azure.com/v3/sede-ds-adp/Platform%20-%20General/sedp-tf-az-tagging?ref=v0.5.0"
   project        = var.project
   workStream     = var.workStream
   projectStream  = var.projectStream

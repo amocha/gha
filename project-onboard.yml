@@ -32,8 +32,8 @@ parameters:
     displayName: Provide the workStream name for the project. (for e.g. 4D, FUN - 3 Characters max)
     type: string
     default: "def"
-  - name: environ
-    displayName: Environment for the particular application. For e.g dev, prd etc.
+  - name: appEnv
+    displayName: Environment for the particular application. For e.g dev, dev01, prd etc.
     type: string
   - name: appsptype
     displayName: App service Plan required? if Required please specify the type else leave the default value of none.
@@ -58,43 +58,39 @@ parameters:
     displayName: Provide base64 encoded tfvar for the underlying onboarding code.
     type: string
     default: bm9uZT0iZW1wdHkiCg==
-  - name: envtype
-    displayName: Provide environment type (the cluster to onboard the namespace) to?
-    default: "npd"
+  - name: clusterEnv
+    displayName: Cluster environment that the app should be onboarded to.
+    type: string
+    default: sbx
     values:
-      - "npd"
-      - "prd"
+      - sbx
+      - dev
+      - qat
+      - npd
+      - prd
 
 variables:
-  - group: dep-onboard
+  - group: dep-onboard-${{ parameters.clusterEnv }}
   - template: templates/var.yml
     parameters:
       workStream: ${{ parameters.workStream }}
       projectShortCode: ${{ parameters.projectShortCode }}
-      environ: ${{ parameters.environ }}
+      environ: ${{ parameters.appEnv }}
       placement: ${{ parameters.placement }}
       instance: 001
-  - ${{ if eq(parameters.envtype, 'npd') }}:
+  - ${{ if ne(parameters.clusterEnv, 'prd') }}:
     - name: isProd
       value: false
-    - name: kubeconfigControl
-      value: $(kubeconfigCcNpd)
-    - name: kubeconfigWorkload
-      value: $(kubeconfigWkNpd)
-  - ${{ if eq(parameters.envtype, 'prd') }}:
+  - ${{ if eq(parameters.clusterEnv, 'prd') }}:
     - name: isProd
       value: true
-    - name: kubeconfigControl
-      value: $(kubeconfigCcPrd)
-    - name: kubeconfigWorkload
-      value: $(kubeconfigWkPrd)
 
 stages:
   - template: templates/project-onboard.yml
     parameters:
       workStream: ${{ parameters.workStream }}
       projectShortCode: ${{ parameters.projectShortCode }}
-      environ: ${{ parameters.environ }}
+      environ: ${{ parameters.appEnv }}
       placement: ${{ parameters.placement }}
       instance: 001
       releaseVersion: 100

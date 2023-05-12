@@ -11,7 +11,7 @@ stages:
             displayName: Create TF Storage Account
             inputs:
               azureSubscription: $(azureServiceConnection)
-              failOnStandardError: true
+              failOnStandardError: false
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
@@ -22,7 +22,7 @@ stages:
                 if (! az storage account show -n $tfstacc -g $resgrp -o json --query 'name'  2>/dev/null); then
                   tfstacc="$(lprojectShortCode)$(workStream)sg2$(lenviron)${{ parameters.instance }}001"
                 fi
-                az storage account create -g $resgrp --name $tfstacc --kind StorageV2 -l northeurope --sku Standard_GRS --https-only true --default-action allow
+                az storage account create -g $resgrp --name $tfstacc --kind StorageV2 -l northeurope --sku Standard_GRS --https-only true --public-network-access Enabled --allow-blob-public-access true
                 az storage container create --name application --account-name $tfstacc --auth-mode "login"
                 echo "##vso[task.setvariable variable=RG]$resgrp"
                 echo "##vso[task.setvariable variable=STA]$tfstacc"
@@ -168,14 +168,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: inlineScript
               inlineScript: |
-                kAppResId=$(knAppResId)
-                kExpandResId=$(knExpandResId)
-                if [ $(isProd) == "true" ]; then
-                  kAppResId=$(kpAppResId)
-                  kExpandResId=$(kpExpandResId)
-                fi
-
                 payload="{\"properties\":{\"name\":\"$(kubeformns)\",\"value\":\"$(TKN)\"}}"
-                az rest --method put  --uri "${kAppResId}/functions/kapply/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
-                az rest --method put  --uri "${kAppResId}/functions/kread/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
-                az rest --method put  --uri "${kExpandResId}/functions/expand/keys/$(kubeformns)/?api-version=2018-11-01"  --body "$payload"
+                az rest --method put --uri "$(kAppResId)/functions/kapply/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
+                az rest --method put --uri "$(kAppResId)/functions/kread/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
+                az rest --method put --uri "$(kExpandResId)/functions/expand/keys/$(kubeformns)/?api-version=2018-11-01" --body "$payload"
