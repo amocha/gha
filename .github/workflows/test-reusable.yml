@@ -18,7 +18,7 @@ on:
           - prd
 jobs:
   test-secret:
-     uses: amchau/gha-reusable-workflows/.github/workflows/test.yml
+     uses: amchau/gha-reusable-workflows/.github/workflows/test.yml@main
      with:
       genv: npd
      secrets: inherit
