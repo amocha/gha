@@ -1,0 +1,24 @@
+name: Test Reusable
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main", "reusable-workflow" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+    inputs:
+      genv:
+        default: npd
+        type: choice
+        options:
+          - npd
+          - prd
+jobs:
+  test-secret:
+     uses: amchau/gha-reusable-workflows/.github/workflows/test.yml@main
+     with:
+      genv: npd
+     secrets: inherit
