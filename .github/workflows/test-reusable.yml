@@ -18,7 +18,7 @@ on:
           - prd
 jobs:
   test-secret:
-     uses: amocha/reusable-workflows/.github/workflows/test.yml@main
-     with:
-      genv: npd
-     secrets: inherit
+    uses: amocha/reusable-workflows/.github/workflows/test.yml@main
+    with:
+         genv: ${{ inputs.genv }}
+    secrets: inherit
