@@ -1,0 +1,27 @@
+aad_group_id:
+- 959e2c30-2f47-4a62-b63c-3915aceaa30e
+- c16514f3-a457-4923-9b42-7020262bedcb
+environments:
+    dev:
+      aad_sp_client_id: 1879a7ee-c91a-46d7-8f53-5813983951c7
+      aad_sp_object_id: c5fddf9c-5dda-40f9-9fad-33f5a770f73a
+      aad_spn_name: AZ-AS-SPN-N-DS-aba959d42df747f29a8f
+      vnet_name: 10.0.1.0/24
+      primary_location: westeurope
+      subscription_id: 15892d4f-f4e2-4e07-beb7-083eaaaa0245
+      law_required: false
+      secondary_location: northeurope
+metadata:
+  project_name: Deployment engine Example
+  work_stream: app
+  project_stream: dep
+  cost_code:  cc-dep
+sso:
+  client:
+   - name: client1
+   - name: client2
+apim:
+  required: true
+  ssoIntegration: disabled
+frontdoor:
+  required: true
