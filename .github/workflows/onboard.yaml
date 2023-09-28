@@ -43,6 +43,8 @@ jobs:
       - name: Commit report
         run: |
           echo "hello" > onboard.yaml
+          git config user.name "dep_onboard@github.com"
+          git config user.email "dep_onboard@noreply.github.com"
           git commit -am "Automated report"
           git push
         working-directory: onboard
