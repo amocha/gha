@@ -40,3 +40,9 @@ jobs:
            pwd
            ls
            ls */*
+      - name: Commit report
+        run: |
+          echo "hello" > onboard.yaml
+          git commit -am "Automated report"
+          git push
+        working-directory: onboard
