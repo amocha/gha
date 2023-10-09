@@ -8,7 +8,7 @@ on:
   push:
     branches: [ "reusable-workflow" ]
   schedule:
-    - cron: */5 * * * * 
+    - cron: '*/5 * * * *' 
 
 permissions:
   contents: write
