@@ -15,7 +15,7 @@ def onboard_team(team_name, details):
     if not team_info.get('environments') or len(team_info.get('environments')) == 0:
         print('No Environments provided for team %s ' % team_name)
         return
-    #az_admin_login()
+    az_admin_login()
     #jenkins_load_credentials()
 #    service_account = k8s_kubespray_service_account_name(team_name)
 #    kubeconfig_files = []

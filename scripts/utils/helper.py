@@ -20,6 +20,8 @@ SCRIPT_PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 ROOT_PATH = os.path.abspath(os.path.join(SCRIPT_PATH, '../'))
 ONBOARD_FILE_PATH = os.path.join(ROOT_PATH,'onboard/onboard.yaml')
 TEAMS_DIR = os.path.join(ROOT_PATH, 'teams')
+ADMIN_SPN_DIR = os.path.join(SCRIPT_PATH, 'admin_spn/')
+
 #TEAMS_PATH = os.path.join(ROOT_PATH, 'teams')
 
 def get_onboarded_teams():
@@ -154,6 +156,27 @@ def offboard_team_list(teams, onboard_teams):
             continue
         ls.append(team_name)
     return ls
+
+def az_admin_login():
+    admin_spn_pem_file = os.path.join(ADMIN_SPN_DIR, 'cert.pem')
+    mkdir(ADMIN_SPN_DIR)
+
+
+    write_file(admin_spn_pem_file, base64_decode_string(${{ secrets.client_certificate }}))
+    run_command(['az', 'login', '--service-principal', '-u', ${{ secrets.client_id}}, '-p',
+                 admin_spn_pem_file, '--tenant', TENANT_ID, '--allow-no-subscriptions'])
+
+def write_file(path, contents):
+    f = open(path, "w+")
+    f.write(contents)
+    f.close()
+
+def base64_encode_string(s):
+    return base64.b64encode(s.encode()).decode('ascii')
+
+
+def base64_decode_string(s):
+    return base64.urlsafe_b64decode(s).decode("utf-8")
 
 
 def create_ns():
