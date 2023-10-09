@@ -18,7 +18,7 @@ from pathlib import Path
 #ROOT_PATH=os.path.dirname("/home/amol/repo/amocha/")
 SCRIPT_PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
 ROOT_PATH = os.path.abspath(os.path.join(SCRIPT_PATH, '../'))
-ONBOARD_FILE_PATH = os.path.join(ROOT_PATH,'../onboard/onboard.yaml')
+ONBOARD_FILE_PATH = os.path.join(ROOT_PATH,'onboard/onboard.yaml')
 TEAMS_DIR = os.path.join(ROOT_PATH, 'teams')
 #TEAMS_PATH = os.path.join(ROOT_PATH, 'teams')
 
