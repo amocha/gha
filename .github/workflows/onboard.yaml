@@ -34,6 +34,11 @@ jobs:
           path: onboard
           ref: onboard
 
+      - name: test
+        run: |
+           pwd
+           ls -l ../
+
       - name: setup python
         uses: actions/setup-python@v4
         with:
