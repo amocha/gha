@@ -34,11 +34,15 @@ jobs:
           path: onboard
           ref: onboard
 
-      - name: test
-        run: |
-           pwd
-           ls -l ../
-           ls -l ../../
+
+      - name: AZ cli login                                                                                                                                      
+        uses: azure/CLI@v1                                                                                                                                      
+        with:                                                                                                                                                   
+          inlineScript: |
+            mkdir admin_spn
+            echo "${{ secrets.client_certificate }}" | base64 -d > admin_spn/cert.pem                                                                                 
+            az login --service-principal -u ${{ secrets.client_id }} -p cert.pem --tenant db1e96a8-a3da-442a-930b-235cac24cd5c
+            az account set -s b91c973e-2dbe-421e-ab54-b6eaef942acf
 
       - name: setup python
         uses: actions/setup-python@v4

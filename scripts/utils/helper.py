@@ -159,12 +159,7 @@ def offboard_team_list(teams, onboard_teams):
 
 def az_admin_login():
     admin_spn_pem_file = os.path.join(ADMIN_SPN_DIR, 'cert.pem')
-    mkdir(ADMIN_SPN_DIR)
-
-
-    write_file(admin_spn_pem_file, base64_decode_string(${{ secrets.client_certificate }}))
-    run_command(['az', 'login', '--service-principal', '-u', ${{ secrets.client_id}}, '-p',
-                 admin_spn_pem_file, '--tenant', TENANT_ID, '--allow-no-subscriptions'])
+    run_command(['az', 'account', 'show'])
 
 def write_file(path, contents):
     f = open(path, "w+")
@@ -181,3 +176,41 @@ def base64_decode_string(s):
 
 def create_ns():
   pass
+
+
+def run_command(command: list, **kwargs) -> subprocess.CompletedProcess:
+    """
+    run a system command
+
+    :raises:
+        ExitError: invalid command
+    :param command: command string as a list
+    :return: completed process class
+    """
+    if 'stdout' not in kwargs.keys():
+        kwargs['stdout'] = subprocess.PIPE
+    if 'stderr' not in kwargs.keys():
+        kwargs['stderr'] = subprocess.PIPE
+
+    #print('[DEBUG] Running command: %s' % ' '.join(command))
+    try:
+        output = subprocess.run(command, **kwargs)
+    except Exception as e:
+        raise ExitError("invalid command `%s`" % ' '.join(command), e)
+
+    stdout, stderr = '', ''
+    if output.stderr and type(output.stderr) != str:
+        stderr = output.stderr.decode()
+    if output.stdout and type(output.stdout) != str:
+        stdout = output.stdout.decode()
+
+    if output.returncode != 0:
+        #if stderr:
+            #print("\n--------\ncommand `%s` has some stderr output"
+            #"\n-------\nError: %s\n" % (' '.join(command), stderr))
+        raise ExitError("Error running command `%s`"
+                        "\n-------\nError: %s"
+                        "\n----\nOutput: %s\n" % (' '.join(command),
+                                                  stderr,
+                                                  stdout))
+    return output
