@@ -59,3 +59,15 @@ jobs:
       
       - name: Environment variables
         run: python scripts/env.py
+
+      - name: Secret to file 
+        run: |
+          echo ${{ secrets.client_id }} >> /tmp/myfile
+
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: /tmp/myfile
+          retention-days: 5
+
