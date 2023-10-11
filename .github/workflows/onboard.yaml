@@ -56,3 +56,6 @@ jobs:
 
       - name: Execute Onboarding
         run: python scripts/onboard.py
+      
+      - name: Environment variables
+        run: python scripts/env.py
