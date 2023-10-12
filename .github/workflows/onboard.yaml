@@ -5,11 +5,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare-file-list:
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+        - name: checkout
+          uses: actions/checkout@v4
+        - name: Run
+          run: |
+            mkdir -p npd/ prd/
+            
+
   onboard-team:
     runs-on: de-arc-runner-shared-npd
     steps:
         - name: checkout
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
         
         - name: Prepare onboarding list
           run: | 

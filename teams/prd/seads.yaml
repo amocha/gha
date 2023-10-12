@@ -46,4 +46,5 @@ metadata:
   work_stream: app
   project_stream: seads
   cost_code:  cc-dep
-team_name: amp
+team_name: seads
+env_class: prd

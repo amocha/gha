@@ -44,6 +44,7 @@ environments:
 metadata:
   project_name: Deployment engine Example
   work_stream: app
-  project_stream: dep
+  project_stream: seads
   cost_code:  cc-dep
-team_name: depengine
+team_name: seads
+env_class: prd

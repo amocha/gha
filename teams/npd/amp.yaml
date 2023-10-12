@@ -47,3 +47,4 @@ metadata:
   project_stream: amp
   cost_code:  cc-dep
 team_name: amp
+env_class: npd

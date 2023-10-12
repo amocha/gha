@@ -10,31 +10,29 @@ import base64
 import json
 import shutil
 import hashlib
+import requests
 import multiprocessing
 from pathlib import Path
 
 
-
-#ROOT_PATH=os.path.dirname("/home/amol/repo/amocha/")
-SCRIPT_PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
-ROOT_PATH = os.path.abspath(os.path.join(SCRIPT_PATH, '../'))
-ONBOARD_FILE_PATH = os.path.join(ROOT_PATH,'onboard/onboard.yaml')
+ROOT_PATH = os.path.dirname(os.path.abspath(sys.argv[0]))
+ONBOARD_FILE_PATH = os.path.join(ROOT_PATH, 'onboard/onboard.yaml')
 TEAMS_DIR = os.path.join(ROOT_PATH, 'teams')
 ADMIN_SPN_DIR = os.path.join(SCRIPT_PATH, 'admin_spn/')
 
-#TEAMS_PATH = os.path.join(ROOT_PATH, 'teams')
 
 def get_onboarded_teams():
     try:
-       with open(ONBOARD_FILE_PATH,'r') as f:
-         yaml_data = yaml.safe_load(f)
-         team_list = []
-         for key, value in yaml_data.items():
-             if value['onboard_status'] == 'onboarded':
-                 team_list.append(key)
-         return yaml.dump(team_list)
+        with open(ONBOARD_FILE_PATH, 'r') as f:
+            yaml_data = yaml.safe_load(f)
+            team_list = []
+            for key, value in yaml_data.items():
+                if value['onboard_status'] == 'onboarded':
+                    team_list.append(key)
+            return yaml.dump(team_list)
     except yaml.YAMLError:
         print("error in the onboarding status file")
+
 
 
 def team_dir_list():
@@ -53,12 +51,14 @@ def team_dir_list():
         }
     return hashes
 
+
 def file_list(path_to_files, file_ext='yaml'):
     file_list = []
     for f in os.listdir(path_to_files):
         if f.endswith(file_ext):
             file_list.append(os.path.join(path_to_files, f))
     return sorted(file_list)
+
 
 def read_file(path: str) -> str:
     """
@@ -79,6 +79,7 @@ def read_file(path: str) -> str:
 def print_error(err):
     print(err, file=sys.stderr)
     exit(-1)
+
 
 def read_yaml(stream) -> iter:
     """
@@ -103,6 +104,7 @@ def read_yaml(stream) -> iter:
             name = stream.name
         raise ExitError("invalid yaml: %s\n%s" % (
             name, contents), e)
+
 
 class ExitError(Exception):
     """
@@ -139,7 +141,7 @@ def md5(t):
 def onboard_team_list(teams, onboard_teams):
     hashes = {}
     for team_name, details in teams.items():
-        if team_name in onboard_teams: 
+        if team_name in onboard_teams:
             continue
         if team_name in hashes:
             print_error('Duplicate team name %s' % team_name)
@@ -149,32 +151,14 @@ def onboard_team_list(teams, onboard_teams):
 
 
 
-def offboard_team_list(teams, onboard_teams):
-    ls = []
-    for team_name in onboard_teams:
-        if team_name in teams:
-            continue
-        ls.append(team_name)
-    return ls
-
-def az_admin_login():
-    admin_spn_pem_file = os.path.join(ADMIN_SPN_DIR, 'cert.pem')
-    run_command(['az', 'account', 'show'])
+def az_login(env):
+    spn_pem_file = os.path.join(ADMIN_SPN_DIR, env, 'cert.pem')
+    run_command(['az', 'account', '--service-principal', '-u', client_id, '-p', spn_pem_file, '--tenant', TENANT_ID,
+                 '--allow-no-subscriptions'])
 
 
-
-def write_file(path, contents):
-    f = open(path, "w+")
-    f.write(contents)
-    f.close()
-
-def base64_encode_string(s):
-    return base64.b64encode(s.encode()).decode('ascii')
-
-
-def base64_decode_string(s):
-    return base64.urlsafe_b64decode(s).decode("utf-8")
-
+def az_set_subscription(s):
+    run_command(['az', 'account', 'set', '--subscription', s])
 
 
 
@@ -192,7 +176,7 @@ def run_command(command: list, **kwargs) -> subprocess.CompletedProcess:
     if 'stderr' not in kwargs.keys():
         kwargs['stderr'] = subprocess.PIPE
 
-    #print('[DEBUG] Running command: %s' % ' '.join(command))
+    # print('[DEBUG] Running command: %s' % ' '.join(command))
     try:
         output = subprocess.run(command, **kwargs)
     except Exception as e:
@@ -205,12 +189,40 @@ def run_command(command: list, **kwargs) -> subprocess.CompletedProcess:
         stdout = output.stdout.decode()
 
     if output.returncode != 0:
-        #if stderr:
-            #print("\n--------\ncommand `%s` has some stderr output"
-            #"\n-------\nError: %s\n" % (' '.join(command), stderr))
+        # if stderr:
+        # print("\n--------\ncommand `%s` has some stderr output"
+        # "\n-------\nError: %s\n" % (' '.join(command), stderr))
         raise ExitError("Error running command `%s`"
                         "\n-------\nError: %s"
                         "\n----\nOutput: %s\n" % (' '.join(command),
                                                   stderr,
                                                   stdout))
     return output
+
+
+def assign_contributor(access_token, subscription_id, object_id, env):
+    if env != "prod":
+        operating_environment = "N"
+    else:
+        operating_environment = "P"
+    API_ENDPOINT = "https://azasroleassignments.trafficmanager.net/api/Create"
+    parameters = {
+        "OperatingEnvironment": operating_environment,
+        "CloudEnvironment": "EXT",
+        "TargetObjectId": object_id,
+        "TargetRole": "ShellContributorExternal",
+        "TargetScope": "/subscriptions/" + subscription_id
+
+    }
+    headers = {
+        "Authorization": "Bearer " + access_token,
+        "Content-Type": "application/json"
+    }
+    response = requests.post(API_ENDPOINT, json=parameters, headers=headers)
+    # Check the response status code.
+    if response.status_code == 200:
+        # The request was successful.
+        print(response.content)
+    else:
+        # The request failed.
+        print("Failed to call the API: {}".format(response.status_code))
