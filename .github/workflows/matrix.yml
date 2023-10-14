@@ -1,29 +1,56 @@
 name: matrix
 on: push
 jobs:
-  job1:
+  npd:
+    runs-on: ubuntu-latest
+    outputs:
+      env: '["npd1","npd2"]'
+  prd:
+    runs-on: ubuntu-latest
+    outputs:
+      env: '["prd1","prd2"]'
+  
+  npd-start:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        env-class: ["npd","prd"]
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.name }}
+        env: ${{ needs.npd.outputs.env }}
     steps:
-    - id: set-matrix
-      run: echo "name=hello-${{ matrix.env-class }}" >> "$GITHUB_OUTPUT"
-  job2:
+      - run: |
+          echo ${{ matrix.env }}
+  
+  prd-start:
     runs-on: ubuntu-latest
-    env:
-      OUT_NPD: ${{ needs.job1.outputs.matrix-npd }}
-      OUT_PRD: ${{ needs.job1.outputs.matrix-prd }}
-      myvar: ${{ needs.job1.outputs.matrix }}
+    strategy:
+      matrix:
+        env: ${{ needs.prd.outputs.env }}
     steps:
       - run: |
-          echo "${OUT_NPD}"
-      - run: |
-          echo "${OUT_PRD}"
-      - run: |
-          echo "$myvar"
+          echo ${{ matrix.env }}
+
+      # job1:
+      #   runs-on: ubuntu-latest
+      #   strategy:
+      #     matrix:
+      #       env-class: ["npd","prd"]
+      #   outputs:
+      #     matrix: ${{ steps.set-matrix.outputs.name }}
+      #   steps:
+      #   - id: set-matrix
+      #     run: echo "name=hello-${{ matrix.env-class }}" >> "$GITHUB_OUTPUT"
+      # job2:
+      #   runs-on: ubuntu-latest
+      #   env:
+      #     OUT_NPD: ${{ needs.job1.outputs.matrix-npd }}
+      #     OUT_PRD: ${{ needs.job1.outputs.matrix-prd }}
+      #     myvar: ${{ needs.job1.outputs.matrix }}
+      #   steps:
+      #     - run: |
+      #         echo "${OUT_NPD}"
+      #     - run: |
+      #         echo "${OUT_PRD}"
+      #     - run: |
+      #         echo "$myvar"
 
         #job2:
         #  needs: job1
