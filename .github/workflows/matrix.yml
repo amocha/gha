@@ -4,7 +4,7 @@ jobs:
   npd:
     runs-on: ubuntu-latest
     outputs:
-      envi: '{\"env\":\"npd\"}'
+      envi: ${{ toJSON(echo '{"env":"npd"}') }} 
     steps:
       - run: echo "hello npd - job npd"
   prd:
@@ -21,7 +21,7 @@ jobs:
       myenv: ${{ needs.npd.outputs.envi }}
     strategy:
       matrix: 
-        includes: ${{ toJSON(needs.npd.outputs.envi) }}
+        includes: ${{ needs.npd.outputs.envi }}
     steps:
       - run: |
           echo ${{ matrix }}
