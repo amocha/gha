@@ -1,9 +1,6 @@
-name: build
+name: matrix
 on: push
 jobs:
-  job0:
-    runs-on: ubuntu-latest
-
   job1:
     runs-on: ubuntu-latest
     strategy:
