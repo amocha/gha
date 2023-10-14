@@ -4,15 +4,12 @@ jobs:
   npd:
     runs-on: ubuntu-latest
     outputs:
-      envi: ${{ toJSON(echo '{"env":"npd"}') }} 
+      envi: ${{ toJSON(steps.npd.outputs.test }} 
     steps:
       - run: echo "hello npd - job npd"
-  prd:
-    runs-on: ubuntu-latest
-    outputs:
-      envi: "prd2"
-    steps:
-      - run: echo "hello prd - job prd"
+      - run: |
+           echo 'test={"env": "npd"}'
+        id: npd
   
   npd-start:
     runs-on: ubuntu-latest
