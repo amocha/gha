@@ -6,13 +6,13 @@ jobs:
     outputs:
       env: '["npd1","npd2"]'
     steps:
-      run: echo "hello npd - job npd"
+      - run: echo "hello npd - job npd"
   prd:
     runs-on: ubuntu-latest
     outputs:
       env: '["prd1","prd2"]'
     steps:
-      run: echo "hello prd - job prd"
+      - run: echo "hello prd - job prd"
   
   npd-start:
     runs-on: ubuntu-latest
