@@ -1,26 +1,46 @@
 name: matrix
 on: push
 jobs:
-  npd:
+  job1:
     runs-on: ubuntu-latest
+    # Map a step output to a job output
     outputs:
-      envi: "npd1"
+      output1: ${{ steps.step1.outputs.test }}
+      output2: ${{ steps.step2.outputs.test }}
     steps:
-      - run: echo "hello npd - job npd"
-  prd:
+      - id: step1
+        run: echo "test=hello" >> "$GITHUB_OUTPUT"
+      - id: step2
+        run: echo "test=world" >> "$GITHUB_OUTPUT"
+  job2:
     runs-on: ubuntu-latest
-    outputs:
-      envi: "prd2"
+    needs: job1
     steps:
-      - run: echo "hello prd - job prd"
-  
-  npd-start:
-    runs-on: ubuntu-latest
-    env:
-      myenv: ${{ needs.npd.outputs.envi }}
-    steps:
-      - run: |
-          echo $myenv
+      - env:
+          OUTPUT1: ${{needs.job1.outputs.output1}}
+          OUTPUT2: ${{needs.job1.outputs.output2}}
+        run: echo "$OUTPUT1 $OUTPUT2"
+  #jobs:
+  #  npd:
+  #    runs-on: ubuntu-latest
+  #    outputs:
+  #      envi: "npd1"
+  #    steps:
+  #      - run: echo "hello npd - job npd"
+  #  prd:
+  #    runs-on: ubuntu-latest
+  #    outputs:
+  #      envi: "prd2"
+  #    steps:
+  #      - run: echo "hello prd - job prd"
+  #  
+  #  npd-start:
+  #    runs-on: ubuntu-latest
+  #    env:
+  #      myenv: ${{ needs.npd.outputs.envi }}
+  #    steps:
+  #      - run: |
+  #          echo $myenv
   
           #prd-start:
           #  runs-on: ubuntu-latest
