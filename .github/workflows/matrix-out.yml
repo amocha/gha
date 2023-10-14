@@ -49,5 +49,5 @@ jobs:
       matrix:
         includes: ${{ fromJSON(needs.check-matrix.outputs.matrix) }}
     steps:
-      run: |
-         echo ${{ matrix.includes.target }}
+      - run: |
+          echo ${{ matrix.includes.target }}
