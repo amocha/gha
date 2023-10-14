@@ -7,14 +7,21 @@ jobs:
       matrix:
         env-class: ["npd","prd"]
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.name }}
+      matrix-npd: ${{ steps.set-matrix.outputs.hello-npd }}
+      matrix-prd: ${{ steps.set-matrix.outputs.hello-prd }}
     steps:
     - id: set-matrix
-      run: echo "name=hello" >> $GITHUB_OUTPUT
+      run: echo "name=hello-${{ matrix.env-class }}" >> "$GITHUB_OUTPUT"
   job2:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ needs.job1.outputs.matrix }}
+      - env:
+          OUTPUT-NPD: ${{ needs.job1.outputs.matrix-npd }}
+          OUTPUT-PRD: ${{ needs.job1.outputs.matrix-prd }}
+      - run: |
+          echo "$OUTPUT-NPD"
+      - run: |
+          echo "$OUTPUT-PRD"
         #job2:
         #  needs: job1
         #  runs-on: ubuntu-latest
