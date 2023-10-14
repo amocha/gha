@@ -18,12 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       myenv: ${{ needs.npd.outputs.envi }}
-    strategy:
-      matrix:
-        myenv: $myenv
     steps:
       - run: |
-          echo ${{ matrix.myenv }}
+          echo $myenv
   
           #prd-start:
           #  runs-on: ubuntu-latest
