@@ -4,7 +4,7 @@ jobs:
   npd:
     runs-on: ubuntu-latest
     outputs:
-      envi: '{"env":"npd"}'
+      envi: '{\"env\":\"npd\"}'
     steps:
       - run: echo "hello npd - job npd"
   prd:
