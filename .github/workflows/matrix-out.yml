@@ -1,5 +1,6 @@
 name: matrix-out
-on: push
+on:
+  workflow_dispatch:
 jobs:
   matrix:
     runs-on: ubuntu-22.04
