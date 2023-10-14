@@ -3,6 +3,8 @@ on: push
 jobs:
   job1:
     runs-on: ubuntu-latest
+    strategy:
+      matrix: ["npd","prd"]
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
