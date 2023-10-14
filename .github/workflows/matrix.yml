@@ -23,7 +23,7 @@ jobs:
       matrix: ${{ toJSON(needs.npd.outputs.envi) }}
     steps:
       - run: |
-          echo ${{ matrix.myenv }}
+          echo ${{ matrix.env }}
   
           #prd-start:
           #  runs-on: ubuntu-latest
