@@ -14,10 +14,10 @@ jobs:
       run: echo "name=hello-${{ matrix.env-class }}" >> "$GITHUB_OUTPUT"
   job2:
     runs-on: ubuntu-latest
+    env:
+      OUTPUT-NPD: ${{ needs.job1.outputs.matrix-npd }}
+      OUTPUT-PRD: ${{ needs.job1.outputs.matrix-prd }}
     steps:
-      - env:
-          OUTPUT-NPD: ${{ needs.job1.outputs.matrix-npd }}
-          OUTPUT-PRD: ${{ needs.job1.outputs.matrix-prd }}
       - run: |
           echo "$OUTPUT-NPD"
       - run: |
