@@ -16,8 +16,7 @@ jobs:
     env:
       myenv: ${{ needs.npd.outputs.envi }}
     strategy:
-      matrix: 
-        includes: ${{ toYAML(needs.npd.outputs.envi) }}
+      matrix:  ${{ needs.npd.outputs.envi }}
     steps:
       - run: |
           echo ${{ matrix }}
