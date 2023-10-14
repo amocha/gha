@@ -1,0 +1,53 @@
+name: matrix
+on: push
+jobs:
+  matrix:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: mafiapigs-macos
+            metaId: 2177361
+            otherId: 2177360
+          - target: project-windows
+            metaId: 2177362
+            otherId: 2177360
+    steps:
+      - run: |
+          matrix=$((
+            echo '${{ toJSON(matrix) }}'
+          ) | jq -c .)
+          echo "$matrix" > matrix
+          echo "::set-output name=matrix::$matrix"
+        id: matrix
+        if: github.event_name == 'workflow_dispatch' && (github.event.inputs.build_target == matrix.target || github.event.inputs.build_target == '*' || github.event.inputs.build_target == '')
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{ hashFiles('matrix') || 'none' }}
+          path: matrix
+          if-no-files-found: warn
+
+  check-matrix:
+    runs-on:  ubuntu-22.04
+    needs: [ matrix ]
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - uses: actions/download-artifact@v3
+      - run: |
+          matrix="$(cat */matrix | jq -c --slurp .)"
+          echo "::set-output name=matrix::$matrix"
+        id: matrix
+
+  steam:
+    name: "Release ${{ matrix.includes.target }}"
+    needs: [check-matrix]
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        includes: ${{ fromJSON(needs.check-matrix.outputs.matrix) }}
+    steps:
+      run: |
+         echo ${{ matrix.includes.target }}
