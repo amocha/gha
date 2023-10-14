@@ -4,9 +4,8 @@ jobs:
   npd:
     runs-on: ubuntu-latest
     outputs:
-      envi: ${{ toJSON(steps.npd.outputs.test }} 
+      envi: ${{ toJSON(steps.npd.outputs.test) }} 
     steps:
-      - run: echo "hello npd - job npd"
       - run: |
            echo "test={\"env\": \"npd\"}" >> "$GITHUB_OUTPUT"
         id: npd
