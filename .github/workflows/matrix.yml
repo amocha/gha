@@ -7,7 +7,7 @@ jobs:
       envi: ${{ toJSON(steps.npd.outputs.test) }} 
     steps:
       - run: |
-           echo "test={\"env\": \"npd\"}" >> "$GITHUB_OUTPUT"
+           echo "test={"env": "npd"}" >> "$GITHUB_OUTPUT"
         id: npd
   
   npd-start:
