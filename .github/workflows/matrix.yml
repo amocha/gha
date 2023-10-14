@@ -4,33 +4,35 @@ jobs:
   npd:
     runs-on: ubuntu-latest
     outputs:
-      env: "npd1"
+      envi: "npd1"
     steps:
       - run: echo "hello npd - job npd"
   prd:
     runs-on: ubuntu-latest
     outputs:
-      env: "prd2"
+      envi: "prd2"
     steps:
       - run: echo "hello prd - job prd"
   
   npd-start:
     runs-on: ubuntu-latest
+    env:
+      myenv: ${{ needs,npd.outputs.envi}}
     strategy:
       matrix:
-        env: ${{ needs.npd.outputs.env }}
+        myenv: $myenv
     steps:
       - run: |
-          echo ${{ matrix.env }}
+          echo ${{ matrix.myenv }}
   
-  prd-start:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        env: ${{ needs.prd.outputs.env }}
-    steps:
-      - run: |
-          echo ${{ matrix.env }}
+          #prd-start:
+          #  runs-on: ubuntu-latest
+          #  strategy:
+          #    matrix:
+          #      env: ${{ needs.prd.outputs.env }}
+          #  steps:
+          #    - run: |
+          #        echo ${{ matrix.env }}
 
       # job1:
       #   runs-on: ubuntu-latest
