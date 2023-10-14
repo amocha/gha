@@ -17,7 +17,7 @@ jobs:
   npd-start:
     runs-on: ubuntu-latest
     env:
-      myenv: ${{ needs,npd.outputs.envi }}
+      myenv: ${{ needs.npd.outputs.envi }}
     strategy:
       matrix:
         myenv: $myenv
