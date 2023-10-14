@@ -19,9 +19,9 @@ jobs:
       OUTPUT-PRD: ${{ needs.job1.outputs.matrix-prd }}
     steps:
       - run: |
-          echo "$OUTPUT-NPD"
+          echo "${OUTPUT-NPD}"
       - run: |
-          echo "$OUTPUT-PRD"
+          echo "${OUTPUT-PRD}"
         #job2:
         #  needs: job1
         #  runs-on: ubuntu-latest
