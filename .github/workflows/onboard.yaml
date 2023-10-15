@@ -11,9 +11,7 @@ jobs:
         - name: checkout
           uses: actions/checkout@v4
         - name: AZ cli login 
-          uses: azure/CLI@v1
-          with:
-            inlineScript: |
+          run: |
               mkdir -p npd_certs
               cd npd_certs
               echo "${{ secrets.CLIENT_CERTIFICATE }}" | base64 -d > cert.pem
