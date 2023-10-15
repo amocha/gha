@@ -26,18 +26,6 @@ def file_list(path_to_files, file_ext='yaml'):
     return sorted(file_list)  
 
 
-def get_onboarded_teams():
-    try:
-        with open(ONBOARD_FILE_PATH, 'r') as f:
-            yaml_data = yaml.safe_load(f)
-            team_list = []
-            for key, value in yaml_data.items():
-                if value['onboard_status'] == 'onboarded':
-                    team_list.append(key)
-            return yaml.dump(team_list)
-    except yaml.YAMLError:
-        print("error in the onboarding status file")
-
 def team_env_list(file):
   hashes={}
   team_file=read_yaml(file)
@@ -106,6 +94,22 @@ def md5(t):
 
 def az_set_subscription(s):
     run_command(['az', 'account', 'set', '--subscription', s])
+
+
+def onboard_team_list(teams):
+   team_details={}
+   for team_env,details in teams.items():
+       if get_md5(team_env) = details['md5']:
+           continue
+       team_details[team_env]=details
+   return team_details
+
+    
+
+def get_md5(team_env):
+  tmp_md5=run_command(['az','keyvault','secret','show','--vault-name','DP-PUB-MGMT-NPD-kv-001','--name',team_env,'--query','value'])
+  md5=json.loads(tmp_md5.stdout)
+  return md5
 
 
 

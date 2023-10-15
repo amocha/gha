@@ -4,11 +4,22 @@ on: push
 jobs:
   npd-onboarding:
     runs-on: ubuntu-latest
+    environment: "NPD"
     env:
       env-class: "npd"
     steps:
         - name: checkout
           uses: actions/checkout@v4
+        - name: AZ cli login 
+          uses: azure/CLI@v1
+          with:
+            inlineScript: |
+              mkdir -p npd_certs
+              cd npd_certs
+              echo "${{ secrets.CLIENT_CERTIFICATE }}" | base64 -d > cert.pem
+              az login --service-principal -u ${{ secrets.CLIENT_ID }} -p cert.pem --tenant ${{ secrets.TENANT_ID }}
+              az account set -s ${{ secrets.AKS_SUBSCRIPTION_ID }}
+   
         - name: setup python
           uses: actions/setup-python@v4
           with:

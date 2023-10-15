@@ -103,6 +103,8 @@ exit_errors = []
 def main():
     teams = team_dir_list()
     print(teams)
+    onboard_team_list=onboard_team_list(teams)
+    print(onboard_team_list)
 #    cached_onboard_teams = get_onboarded_teams()
 #    onboard_teams = onboard_team_list(teams, cached_onboard_teams)
 #    for team_name, details in onboard_teams.items():
