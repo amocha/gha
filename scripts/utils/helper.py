@@ -31,13 +31,37 @@ def get_onboarded_teams():
     except yaml.YAMLError:
         print("error in the onboarding status file")
 
+def team_env_list(file):
+  hashes={}
+  team_file=read_yaml(file)
+  environments=team_file['environments']
+  metadata=team_file['metadata']
+  team_name=team_file['team_name']
+  for env,details in environments.items():
+    key=team_name+env
+    hashes[key]= {
+      'md5': md5(details),
+      'info': details,
+      'metadata': metadata
+    }
+  return hashes
 
+def team_dir_list():
+  hash={}
+  team_files=file_list(TEAMS_DIR)
+  for f in team_files:
+    a=hash|team_env_list(f)
+    hash=a
+  return hash
 
 def print_error(err):
     print(err, file=sys.stderr)
     exit(-1)
 
 
+def read_yaml(file):
+  with open(file,"r") as f:
+    return yaml.safe_load(f)
 
 
 class ExitError(Exception):
