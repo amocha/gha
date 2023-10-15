@@ -1,0 +1,12 @@
+depenginedev:
+  onboard_status: onboarded
+  key: value
+depenginesbx:
+  onboard_status: onboarded
+  key: value
+ampsbx:
+  onboard_status: onboarded
+  key: value
+ampdev:
+  onboard_status: on
+  key: value
