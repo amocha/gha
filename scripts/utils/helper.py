@@ -14,7 +14,12 @@ import requests
 import multiprocessing
 from pathlib import Path
 
-
+def file_list(path_to_files, file_ext='yaml'):                        
+    file_list = []                                                    
+    for f in os.listdir(path_to_files):                               
+       if f.endswith(file_ext):                                      
+          file_list.append(os.path.join(path_to_files, f))          
+    return sorted(file_list)  
 
 
 def get_onboarded_teams():
