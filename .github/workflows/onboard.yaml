@@ -1,9 +1,6 @@
-name: 'Onboarding'                                                                                                                                                                                                   
-run-name: 'Onboarding'                                                                                                 
-                                                                                                                                                                                                                                         
-on:                                                                                                                                                                                                                                      
-  workflow_dispatch:
-
+name: 'Onboarding'
+run-name: 'Onboarding'
+on: push
 jobs:
   npd-onboarding:
     runs-on: ubuntu-latest
@@ -13,7 +10,7 @@ jobs:
         - run: |
             ls 
           working-directory: ./teams
-            
+    
 
             #onboard-team:
             #  runs-on: de-arc-runner-shared-npd
