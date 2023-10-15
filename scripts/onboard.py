@@ -7,6 +7,8 @@ from utils.helper import *
 
 exit_errors = []
 
+ROOT_PATH = os.getcwd()
+TEAMS_DIR = os.path.join(ROOT_PATH, 'teams',ENV_CLASS)
 
 #def onboard_team(team_name, details):
 #    team_info = details['info']

@@ -15,8 +15,6 @@ import multiprocessing
 from pathlib import Path
 
 
-ROOT_PATH = os.getcwd()
-TEAMS_DIR = os.path.join(ROOT_PATH, 'teams',ENV_CLASS)
 
 
 def get_onboarded_teams():
