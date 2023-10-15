@@ -8,8 +8,17 @@ jobs:
         - name: checkout
           uses: actions/checkout@v4
         - run: |
+          #python scripts/onboard.py 
+          working-directory: ./teams/npd
+
+  prd-onboarding:
+    runs-on: ubuntu-latest
+    steps:
+        - name: checkout
+          uses: actions/checkout@v4
+        - run: |
             ls 
-          working-directory: ./teams
+          working-directory: ./teams/prd
     
 
             #onboard-team:
