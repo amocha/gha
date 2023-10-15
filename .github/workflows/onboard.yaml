@@ -12,8 +12,6 @@ jobs:
           uses: actions/checkout@v4
         - name: AZ cli login 
           run: |
-              mkdir -p npd_certs
-              cd npd_certs
               echo "${{ secrets.CLIENT_CERTIFICATE }}" | base64 -d > cert.pem
               az login --service-principal -u ${{ secrets.CLIENT_ID }} -p cert.pem --tenant ${{ secrets.TENANT_ID }}
               az account set -s ${{ secrets.AKS_SUBSCRIPTION_ID }}
