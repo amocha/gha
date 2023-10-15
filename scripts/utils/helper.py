@@ -105,9 +105,11 @@ def onboard_team_list(teams):
    return team_details
 
     
-
 def get_md5(team_env):
-  tmp_md5=run_command(['az','keyvault','secret','show','--vault-name','DP-PUB-MGMT-NPD-kv-001','--name',team_env,'--query','value'])
+  try:
+    tmp_md5=run_command(['az','keyvault','secret','show','--vault-name','DP-PUB-MGMT-NPD-kv-001','--name',team_env,'--query','value'])
+  except:
+    print("ERROR")
   md5=json.loads(tmp_md5.stdout)
   return md5
 
