@@ -4,6 +4,8 @@ on: push
 jobs:
   npd-onboarding:
     runs-on: ubuntu-latest
+    env:
+      env-class: "npd"
     steps:
         - name: checkout
           uses: actions/checkout@v4

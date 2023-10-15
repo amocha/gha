@@ -100,7 +100,10 @@ exit_errors = []
 #        run_command(['kubectl', 'label', 'sa', 'azure.workload.identity/use=', '"true"', '-f', kubeconfig])
 #
 #
-def main(ENV_CLASS):
+def main():
+    if len(sys.argv) > 1:
+      ENV_CLASS=sys.argv[1]
+      print(f"Running for {ENV_CLASS} Folder")
     teams = team_dir_list()
     print(teams)
 #    cached_onboard_teams = get_onboarded_teams()
@@ -109,8 +112,6 @@ def main(ENV_CLASS):
 #        onboard_team(team_name, details)
 
     # To-do Offboarding
-
-
 
     
 
