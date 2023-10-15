@@ -99,7 +99,7 @@ def az_set_subscription(s):
 def onboard_team_list(teams):
    team_details={}
    for team_env,details in teams.items():
-       if get_md5(team_env) = details['md5']:
+       if get_md5(team_env) == details['md5']:
            continue
        team_details[team_env]=details
    return team_details
