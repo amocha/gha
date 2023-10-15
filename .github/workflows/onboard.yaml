@@ -8,6 +8,7 @@ jobs:
         - name: checkout
           uses: actions/checkout@v4
         - run: |
+          ls
           #python scripts/onboard.py 
           working-directory: ./teams/npd
 
