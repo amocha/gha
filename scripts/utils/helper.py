@@ -14,6 +14,10 @@ import requests
 import multiprocessing
 from pathlib import Path
 
+ROOT_PATH = os.getcwd()
+ENV_CLASS=os.getenv('env-class')
+TEAMS_DIR = os.path.join(ROOT_PATH, 'teams',ENV_CLASS)
+
 def file_list(path_to_files, file_ext='yaml'):                        
     file_list = []                                                    
     for f in os.listdir(path_to_files):                               

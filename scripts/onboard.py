@@ -101,11 +101,6 @@ exit_errors = []
 #
 #
 def main():
-    if len(sys.argv) > 1:
-      ENV_CLASS=sys.argv[1]
-      print(f"Running for {ENV_CLASS} Folder")
-    ROOT_PATH = os.getcwd()
-    TEAMS_DIR = os.path.join(ROOT_PATH, 'teams',ENV_CLASS)
     teams = team_dir_list()
     print(teams)
 #    cached_onboard_teams = get_onboarded_teams()
