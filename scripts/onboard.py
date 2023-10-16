@@ -27,6 +27,7 @@ def create_resources(team_info):
     env_class = team_info['env_class']
     env = team_info['env']
     namespace = (metadata['project_stream'] + "-" + metadata['work_stream'] + "-" + env).lower()
+    print(namespace)
     #for key, value in team_info['info'].items():
     #    namespace = (metadata['project_stream'] + "-" + metadata['work_stream'] + "-" + env).lower()
     if env_class != "prd":
@@ -45,6 +46,7 @@ def create_resources(team_info):
 
     # Set Kubeconfig
     kubeconfig = ("/tmp/" + env).lower()
+    print(kubeconfig)
 
     # Prepare AKS Kubeconfig + Get OIDC issuer
     run_command(
@@ -52,6 +54,8 @@ def create_resources(team_info):
          kubeconfig,'--subscription',aks_subscription_id])
     tmp_aks_oidc_issuer=run_command(['az','aks','show','--resource-group',resource_group,'--name',cluster_name,'--query','oidcIssuerProfile.issuerUrl'])
     aks_oidc_issuer=json.loads(tmp_aks_oidc_issuer.stdout)
+
+    print(aks_oidc_issuer)
 
     # Set user Subscription
     subscription_id = team_info['info']['subscription_id']
@@ -79,6 +83,9 @@ def create_resources(team_info):
         ['az', 'identity', 'show', '--resource-group', 'DEP-MI', '--name', 'depidentity', '--query', 'principalId'])
     object_id = json.loads(tmp_object_id.stdout)
 
+    print(client_id)
+    print(object_id)
+
     # Grant MI Contributor on the Subscription
 
     if env != "prd":
@@ -103,9 +110,7 @@ def create_resources(team_info):
 
 def main():
     teams = team_dir_list()
-    print(teams)
     onboard_t_list = onboard_team_list(teams)
-    print(onboard_t_list)
     for team_env, details in onboard_t_list.items():
        onboard_team(team_env, details)
 
