@@ -9,6 +9,7 @@ exit_errors = []
 
 
 def onboard_team(team_name, details):
+    print("In Onboard Team")
     team_info = details['info']
     if len(team_info) == 0:
         print ('No Team Details')
