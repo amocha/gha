@@ -37,7 +37,9 @@ def team_env_list(file):
     hashes[key]= {
       'md5': md5(details),
       'info': details,
-      'metadata': metadata
+      'metadata': metadata,
+      'env_class': ENV_CLASS,
+      'env': env
     }
   return hashes
 
@@ -154,29 +156,29 @@ def run_command(command: list, **kwargs) -> subprocess.CompletedProcess:
     return output
 
 
-#def assign_contributor(access_token, subscription_id, object_id, env):
-#    if env != "prod":
-#        operating_environment = "N"
-#    else:
-#        operating_environment = "P"
-#    API_ENDPOINT = "https://azasroleassignments.trafficmanager.net/api/Create"
-#    parameters = {
-#        "OperatingEnvironment": operating_environment,
-#        "CloudEnvironment": "EXT",
-#        "TargetObjectId": object_id,
-#        "TargetRole": "ShellContributorExternal",
-#        "TargetScope": "/subscriptions/" + subscription_id
-#
-#    }
-#    headers = {
-#        "Authorization": "Bearer " + access_token,
-#        "Content-Type": "application/json"
-#    }
-#    response = requests.post(API_ENDPOINT, json=parameters, headers=headers)
-#    # Check the response status code.
-#    if response.status_code == 200:
-#        # The request was successful.
-#        print(response.content)
-#    else:
-#        # The request failed.
-#        print("Failed to call the API: {}".format(response.status_code))
+def assign_contributor(access_token, subscription_id, object_id, env):
+    if env != "prod":
+        operating_environment = "N"
+    else:
+        operating_environment = "P"
+    API_ENDPOINT = "https://azasroleassignments.trafficmanager.net/api/Create"
+    parameters = {
+        "OperatingEnvironment": operating_environment,
+        "CloudEnvironment": "EXT",
+        "TargetObjectId": object_id,
+        "TargetRole": "ShellContributorExternal",
+        "TargetScope": "/subscriptions/" + subscription_id
+
+    }
+    headers = {
+        "Authorization": "Bearer " + access_token,
+        "Content-Type": "application/json"
+    }
+    response = requests.post(API_ENDPOINT, json=parameters, headers=headers)
+    # Check the response status code.
+    if response.status_code == 200:
+        # The request was successful.
+        print(response.content)
+    else:
+        # The request failed.
+        print("Failed to call the API: {}".format(response.status_code))
