@@ -50,7 +50,7 @@ def create_resources(team_info):
     run_command(
         ['az', 'aks', 'get-credentials', '--resource-group', resource_group, '--name', cluster_name, '--public-fqdn', '--admin', '-f',
          kubeconfig,'--subscription',aks_subscription_id])
-    tmp_aks_oidc_issuer=run_command(['az','aks','show','--resource_group',resource_group,'--name',cluster_name,'--query','oidcIssuerProfile.issuerUrl'])
+    tmp_aks_oidc_issuer=run_command(['az','aks','show','--resource-group',resource_group,'--name',cluster_name,'--query','oidcIssuerProfile.issuerUrl'])
     aks_oidc_issuer=json.loads(tmp_aks_oidc_issuer.stdout)
 
     # Set user Subscription
