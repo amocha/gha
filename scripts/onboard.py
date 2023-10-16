@@ -32,14 +32,14 @@ def create_resources(team_info):
     if env_class != "prd":
         # Code for more env variations like sbx1, pre1
         resource_group = ("DEP-MGMT-EUW-" + env + "-AKS-PRIV-CC-RG").upper()
-        cluster_name = ("dep-aks-priv-euw-" + env).lower()
+        cluster_name = ("dep-aks-priv-cc-euw-" + env).lower()
         aks_subscription_id="b91c973e-2dbe-421e-ab54-b6eaef942acf"
     else:
         if env != "prd":
             resource_group = ("DEP-MGMT-EUN-NPD-AKS-PRIV-CC-RG").upper()
-            cluster_name = ("dep-aks-priv-eun-npd").lower()
+            cluster_name = ("dep-aks-priv-cc-eun-npd").lower()
         else:
-            cluster_name = ("dep-aks-priv-eun-prd").lower()
+            cluster_name = ("dep-aks-priv-cc-eun-prd").lower()
             resource_group = ("DEP-MGMT-EUN-PRD-AKS-PRIV-CC-RG").upper()
         aks_subscription_id="4a6e6b74-cb13-46ee-af3f-c12789e34d51"
 
