@@ -54,7 +54,7 @@ def create_resources(team_info):
     aks_oidc_issuer=json.loads(tmp_aks_oidc_issuer.stdout)
 
     # Set user Subscription
-    subscription_id = details['subscription_id']
+    subscription_id = team_info['subscription_id']
     az_set_subscription(subscription_id)
 
     # Create RG to house managed identity
