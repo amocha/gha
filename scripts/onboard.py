@@ -62,7 +62,7 @@ def create_resources(team_info):
     az_set_subscription(subscription_id)
 
     # Create RG to house managed identity
-    run_command(['az', 'group', 'create', '-l', 'westeurope', 'DEP-MI'])
+    run_command(['az', 'group', 'create', '-l', 'westeurope', '--resource-group', 'DEP-MI'])
 
     # Create MI
     run_command(['az', 'identity', 'create', '--name', 'depidentity', '--location', 'westeurope', '--subscription',
