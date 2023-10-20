@@ -15,6 +15,7 @@ jobs:
               echo "${{ secrets.CLIENT_CERTIFICATE }}" | base64 -d > cert.pem
               az login --service-principal -u ${{ secrets.CLIENT_ID }} -p cert.pem --tenant ${{ secrets.TENANT_ID }} -o none
               az account set -s ${{ secrets.AKS_SUBSCRIPTION_ID }}
+              env
    
         - name: setup python
           uses: actions/setup-python@v4
