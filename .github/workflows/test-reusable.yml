@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: test-secret
     steps:
-      - run: echo ${{ needs.plan.outputs.firstword }}  
+      - run: echo ${{ needs.test-secret.outputs.firstword }}  
   test-secret1:
     if: ${{ needs.plan.result != 'success' }}
     uses: amocha/reusable-workflows/.github/workflows/testwrapper.yml@main
