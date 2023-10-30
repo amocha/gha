@@ -24,7 +24,7 @@ jobs:
          genv: ${{ inputs.genv }}
     secrets: inherit
   test-secret1:
-    if: ${{ needs.test-secret/test-secret/plan.result != 'success' }}
+    if: ${{ needs.plan.result != 'success' }}
     uses: amocha/reusable-workflows/.github/workflows/testwrapper.yml@main
     with:
          genv: ${{ inputs.genv }}
