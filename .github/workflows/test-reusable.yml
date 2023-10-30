@@ -22,3 +22,9 @@ jobs:
     with:
          genv: ${{ inputs.genv }}
     secrets: inherit
+  test-secret1:
+    needs: test-secret
+    uses: amocha/reusable-workflows/.github/workflows/testwrapper.yml@main
+    with:
+         genv: ${{ inputs.genv }}
+    secrets: inherit
