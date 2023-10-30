@@ -18,12 +18,13 @@ on:
           - prd
 jobs:
   test-secret:
+    if: ${{ github.ref_name == 'main' }}
     uses: amocha/reusable-workflows/.github/workflows/testwrapper.yml@main
     with:
          genv: ${{ inputs.genv }}
     secrets: inherit
   test-secret1:
-    needs: test-secret
+    if: ${{ needs.test-secret.result == 'skipped' }}
     uses: amocha/reusable-workflows/.github/workflows/testwrapper.yml@main
     with:
          genv: ${{ inputs.genv }}
